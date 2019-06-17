@@ -9,18 +9,13 @@ import static org.junit.Assert.assertEquals;
 public class TitleTest extends BaseTest {
 
     @Autowired
-    private TitleRepository titleRepository;
+    private TitleBuilder titleBuilder;
 
     @Test
     public void testSaveTitle() {
-        Title title = new Title();
-        title.setDuration(214);
-        title.setName("Never Gonna Give You Up");
-        title.setTrackNumber(1);
+        Title savedTitle = titleBuilder.createTitle("Never Gonna Give You Up", 1, 214);
 
-        Title savedTitle = titleRepository.save(title);
-
-        assertNotNull(savedTitle.getId().longValue());
+        assertNotNull(savedTitle.getId());
         assertEquals(214, savedTitle.getDuration());
         assertEquals("Never Gonna Give You Up", savedTitle.getName());
         assertEquals(1, savedTitle.getTrackNumber());

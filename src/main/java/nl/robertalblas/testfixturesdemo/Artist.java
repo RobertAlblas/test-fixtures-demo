@@ -17,7 +17,7 @@ public class Artist extends BaseEntity {
     @OneToMany
     private List<Album> albums;
 
-    public int getAmountOfSongs() {
+    public int getTotalDuration() {
         return albums.stream()
                 .mapToInt(album -> album.getTitles().stream()
                     .mapToInt(Title::getDuration).sum())

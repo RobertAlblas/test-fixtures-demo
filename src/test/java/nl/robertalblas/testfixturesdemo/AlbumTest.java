@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -11,10 +12,10 @@ import static org.junit.Assert.assertNotNull;
 public class AlbumTest extends BaseTest {
 
     @Autowired
-    private AlbumRepository albumRepository;
+    private AlbumBuilder albumBuilder;
 
     @Autowired
-    private TitleRepository titleRepository;
+    private TitleBuilder titleBuilder;
 
     @Autowired
     private GenreRepository genreRepository;
@@ -25,37 +26,24 @@ public class AlbumTest extends BaseTest {
         genre.setName("pop");
         genre = genreRepository.save(genre);
 
-        Album album = new Album();
-        album.setGenre(genre);
-        album.setName("Whenever you need somebody");
-        album.setYear(1987);
-        album.setTitles(new ArrayList<>());
+        List<Title> titles = new ArrayList<>();
 
-        album.getTitles().add(createTitle("Never Gonna Give You Up", 1, 214));
-        album.getTitles().add(createTitle("Whenever You Need Somebody", 2, 234));
-        album.getTitles().add(createTitle("Together Forever", 3, 206));
-        album.getTitles().add(createTitle("It Would Take A Strong Strong Man", 4, 221));
-        album.getTitles().add(createTitle("The Love Has Gone", 5, 260));
-        album.getTitles().add(createTitle("Don't Say Goodbye", 6, 249));
-        album.getTitles().add(createTitle("Slipping Away", 7, 193));
-        album.getTitles().add(createTitle("No More Looking For Love", 8, 223));
-        album.getTitles().add(createTitle("You Move Me", 9, 220));
-        album.getTitles().add(createTitle("When I Fall In Love", 10, 183));
+        titles.add(titleBuilder.createTitle("Never Gonna Give You Up", 1, 214));
+        titles.add(titleBuilder.createTitle("Whenever You Need Somebody", 2, 234));
+        titles.add(titleBuilder.createTitle("Together Forever", 3, 206));
+        titles.add(titleBuilder.createTitle("It Would Take A Strong Strong Man", 4, 221));
+        titles.add(titleBuilder.createTitle("The Love Has Gone", 5, 260));
+        titles.add(titleBuilder.createTitle("Don't Say Goodbye", 6, 249));
+        titles.add(titleBuilder.createTitle("Slipping Away", 7, 193));
+        titles.add(titleBuilder.createTitle("No More Looking For Love", 8, 223));
+        titles.add(titleBuilder.createTitle("You Move Me", 9, 220));
+        titles.add(titleBuilder.createTitle("When I Fall In Love", 10, 183));
 
-        Album savedAlbum = albumRepository.save(album);
+        Album savedAlbum = albumBuilder.createAlbum("Whenever you need somebody", 1987, titles, genre);
         assertNotNull(savedAlbum.getId());
         assertEquals("Whenever you need somebody", savedAlbum.getName());
         assertEquals(2203, savedAlbum.getDuration());
         assertEquals(1987, savedAlbum.getYear());
-    }
-
-    private Title createTitle(String name, int trackNumber, int duration) {
-        Title title = new Title();
-        title.setDuration(duration);
-        title.setName(name);
-        title.setTrackNumber(trackNumber);
-
-        return titleRepository.save(title);
     }
 
 }
