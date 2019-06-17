@@ -5,17 +5,29 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 @Component
 public class ArtistBuilder {
 
     @Autowired
     private ArtistRepository artistRepository;
 
-    public Artist buildArtist(String name, List<Album> albums) {
-        Artist artist = new Artist();
-        artist.setName(name);
-        artist.setAlbums(albums);
+    @Autowired
+    private AlbumBuilder albumBuilder;
 
-        return artistRepository.save(artist);
+    public Artist findOrCreateArtist(String name, List<Album> albums) {
+        return artistRepository.findByName(name)
+                .orElseGet(() -> {
+                    Artist artist = new Artist();
+                    artist.setName(name);
+                    artist.setAlbums(albums);
+
+                    return artistRepository.save(artist);
+                });
+    }
+
+    public Artist rick_astley() {
+        return findOrCreateArtist("Rick Astley", asList(albumBuilder.whenever_you_need_somebody(), albumBuilder.hold_me_in_your_arms()));
     }
 }

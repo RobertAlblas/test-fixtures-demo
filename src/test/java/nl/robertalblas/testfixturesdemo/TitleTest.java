@@ -13,7 +13,7 @@ public class TitleTest extends BaseTest {
 
     @Test
     public void testSaveTitle() {
-        Title savedTitle = titleBuilder.createTitle("Never Gonna Give You Up", 1, 214);
+        Title savedTitle = titleBuilder.never_gonna_give_you_up();
 
         assertNotNull(savedTitle.getId());
         assertEquals(214, savedTitle.getDuration());
